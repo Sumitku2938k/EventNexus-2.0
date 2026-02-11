@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/authController');
 
 // Example route for home page
-router.route('/').get((req, res) => {
-  res.status(200).send('Welcome to EventNexus API');
-});
+router.route('/').get(authController.home);
 
 // Example route for all events page
-router.route('/events').get((req, res) => {
-  res.status(200).json({ message: 'Events endpoint' });
-});
-
+router.route('/events').get(authController.events);
 
 module.exports = router;
