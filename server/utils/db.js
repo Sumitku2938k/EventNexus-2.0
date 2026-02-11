@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/EventNexus';
+const dbURI = process.env.MONGODB_URI;
 
 const connectDB = async () => {
     try {
         await mongoose.connect(dbURI);
-        console.log('Connected to MongoDB successfully');
+        console.log('Connected to MongoDB successfully ✅');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
-        process.exit(0);
+        process.exit(1);
     }
 };
 module.exports = connectDB;

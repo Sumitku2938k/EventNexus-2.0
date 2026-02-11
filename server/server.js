@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables from .env file
+
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,5 +17,5 @@ connectDB().then(() => { // Ensure DB is connected before starting server
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 }).catch((err) => {
-  console.error('Failed to start server:', err);
+  console.error('Failed to start server:', err);  
 });
