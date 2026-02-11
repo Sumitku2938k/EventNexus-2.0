@@ -1,3 +1,4 @@
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const router = require('./router/auth-router');
@@ -5,7 +6,7 @@ const router = require('./router/auth-router');
 app.use(express.json()); // for parsing application/json
 
 // Example routes
-app.use('/api/auth', router);
+app.use('/api/auth', router); //Restful API for authentication and user management
 
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
