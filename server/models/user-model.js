@@ -25,7 +25,7 @@ const userSchema = new Schema({
         default: 'student',
         required: true
     }
-}, { timestamps: true });
+});
 
 const User = mongoose.model('User', userSchema);
 
