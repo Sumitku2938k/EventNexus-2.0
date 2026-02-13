@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new Schema({
     name: { 
@@ -44,7 +45,24 @@ userSchema.pre('save', async function(next) {
         next(error);
     }
 });
-
+    
+//JSON Web Token ( userSchema.methods se kitne bhi functions create kar sakte hai and usse controllers mein use kar sakte hai )
+userSchema.methods.generateToken = async function (){  
+    try{
+        return jwt.sign({ //JWT payload mein user ki id, email aur role store karenge taki future mein authentication ke time pe use kar sake
+            userId: this._id.toString(),
+            email: this.email,
+            isAdmin: this.role === 'admin',
+        },
+        process.env.JWT_SECRET_KEY,
+        {
+            expiresIn: "7d",
+        }
+        );
+    }catch(error){
+        console.log("Error in generating token: ",error);
+    }
+}
 
 const User = mongoose.model('User', userSchema);
 
