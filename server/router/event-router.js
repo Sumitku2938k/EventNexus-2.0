@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const eventController = require('../controllers/event-controller');
+const authMiddleware = require('../middlewares/auth-middleware');
 
 //Route for all events page
-router.route('/').get(eventController.events);
+router.route('/').get(authMiddleware, eventController.events);
 
 module.exports = router;
