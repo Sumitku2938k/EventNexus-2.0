@@ -44,10 +44,18 @@ const createEvent = async (req, res) => {
 const deleteEvent = async (req, res) => {
     try {
         const { id } = req.params;
-        const event = await Event.findByIdAndDelete(id);
-        if (!event) {
+        const event = await Event.findById(id); // 1. Find event
+
+        if (!event) {  // 2. Event Not found
             return res.status(404).json({ message: 'Event not found' });
         }
+
+        if (event.createdBy.toString() !== req.user._id.toString()) {  // 3. Ownership check
+            return res.status(403).json({ message: 'Unauthorized to delete this event' });
+        }
+
+        await Event.findByIdAndDelete(id); // 4. Delete event
+
         res.status(200).json({ message: 'Event deleted successfully' });
     } catch (error) {
         console.error('Error deleting event:', error);
