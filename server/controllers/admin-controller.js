@@ -1,5 +1,4 @@
 const Event = require('../models/event-model');
-const { get } = require('../router/auth-router');
 const cloudinary = require('cloudinary').v2;
 
 // Configuration
@@ -11,30 +10,35 @@ cloudinary.config({
 
 const createEvent = async (req, res) => {
     try {
-        const { name, description, date, venue, registrationFee, category, poster } = req.body;
+        const { name, description, date, venue, registrationFee, category } = req.body;
 
         // basic validation
         if (!name || !description || !date || !venue || !category) {
             return res.status(400).json({ message: "Missing required fields" });
         }
 
-        const file = req.files.poster;
-        cloudinary.uploader.upload(file.tempFilePath, async (error, result) => {
-            console.log("Result: ", result);
-            const event = new Event({
-                name,
-                description,
-                date,
-                venue,
-                registrationFee,
-                category,
-                poster: result.secure_url,
-                createdBy: req.user._id // secure
-            });
-            await event.save(); // Save the event to the database
-            res.status(201).json({ message: 'Event created successfully', event});
-            console.log("Event created: ", event);
-        })
+        let posterUrl = "";
+
+        // file check and upload to Cloudinary
+        if (req.files && req.files.poster) {
+            const file = req.files.poster;
+            const result = await cloudinary.uploader.upload(file.tempFilePath); // upload using await (NO callback)
+            posterUrl = result.secure_url;
+        }
+
+        const event = new Event({
+            name,
+            description,
+            date,
+            venue,
+            registrationFee,
+            category,
+            poster: posterUrl,
+            createdBy: req.user._id // secure
+        });
+        await event.save(); // Save the event to the database
+        res.status(201).json({ message: 'Event created successfully', event});
+        console.log("Event created: ", event);
     } catch (error) {
         console.error('Error in events controller:', error);
         res.status(500).json({ message: 'Internal Server Error' });
