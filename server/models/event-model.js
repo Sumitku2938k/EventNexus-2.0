@@ -31,9 +31,6 @@ const eventSchema = new Schema({
         type: String,
         default: "https://d12m9erqbesehq.cloudfront.net/wp-content/uploads/sites/2/2023/12/10195608/Blog-Banner-Fun-events-for-college-fest.jpg",
     },
-    maxParticipants: {
-        type: Number
-    },
     createdBy: { 
         type: Schema.Types.ObjectId, //Iska matlab hai ki is field mein jo data store hoga, woh ek MongoDB ObjectId hoga.
         ref: 'User', 

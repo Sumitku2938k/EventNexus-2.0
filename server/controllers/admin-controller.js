@@ -2,17 +2,12 @@ const Event = require('../models/event-model');
 
 const createEvent = async (req, res) => {
     try {
-        const { name, description, date, venue, registrationFee, category, poster, maxParticipants } = req.body;
+        const { name, description, date, venue, registrationFee, category, poster } = req.body;
 
         // basic validation
         if (!name || !description || !date || !venue || !category) {
             return res.status(400).json({ message: "Missing required fields" });
         }
-
-        if (maxParticipants && maxParticipants < 1) {
-            return res.status(400).json({ message: "Invalid maxParticipants" });
-        }
-
 
         const event = new Event({
             name,
@@ -22,7 +17,6 @@ const createEvent = async (req, res) => {
             registrationFee,
             category,
             poster,
-            maxParticipants,
             createdBy: req.user._id // secure
         });
 
