@@ -7,8 +7,12 @@ const router = require('./router/auth-router');
 const eventRouter = require('./router/event-router');
 const adminRouter = require('./router/admin-router');
 const connectDB = require('./utils/db');
+const fileUpload = require('express-fileupload');
 
-app.use(express.json()); // for parsing application/json
+app.use(express.json()); // for parsing application/
+app.use(fileUpload({ // Enable file upload handling
+  useTempFiles: true
+}));
 
 // Example routes
 app.use('/api/auth', router); //Restful API for authentication and user management
