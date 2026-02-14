@@ -67,10 +67,17 @@ const updateEvent = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, description, date, venue, registrationFee, category } = req.body; 
-        const updatedEvent = await Event.findByIdAndUpdate(id, { name, description, date, venue, registrationFee, category }, { new: true });
-        if (!updatedEvent) {
+        const event = await Event.findById(id); // 1. Find event
+        
+        if (!event) { // 2. Event Not found
             return res.status(404).json({ message: 'Event not found' });
         }
+        
+        if (event.createdBy.toString() !== req.user._id.toString()) {  // 3. Ownership check
+            return res.status(403).json({ message: 'Unauthorized to update this event' });
+        }
+
+        const updatedEvent = await Event.findByIdAndUpdate(id, { name, description, date, venue, registrationFee, category }, { new: true });
         res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
     } catch (error) {
         console.error('Error updating event:', error);
