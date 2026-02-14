@@ -1,4 +1,5 @@
 const Event = require('../models/event-model');
+const { get } = require('../router/auth-router');
 const cloudinary = require('cloudinary').v2;
 
 // Configuration
@@ -54,4 +55,4 @@ const deleteEvent = async (req, res) => {
     }
 }
 
-module.exports = { createEvent, deleteEvent };
+module.exports = { createEvent, deleteEvent, getEventById };
