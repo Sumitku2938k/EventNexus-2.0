@@ -5,5 +5,6 @@ const authMiddleware = require('../middlewares/auth-middleware');
 const adminMiddleware = require('../middlewares/admin-middleware');
 
 router.route('/events/create').post(authMiddleware, adminMiddleware, adminController.createEvent); //Route for creating events
+router.route('/events/delete/:id').delete(authMiddleware, adminMiddleware, adminController.deleteEvent); //Route for deleting events
 
 module.exports = router;
