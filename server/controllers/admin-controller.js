@@ -55,4 +55,19 @@ const deleteEvent = async (req, res) => {
     }
 }
 
-module.exports = { createEvent, deleteEvent, getEventById };
+const updateEvent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, description, date, venue, registrationFee, category } = req.body; 
+        const updatedEvent = await Event.findByIdAndUpdate(id, { name, description, date, venue, registrationFee, category }, { new: true });
+        if (!updatedEvent) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+        res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
+    } catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+module.exports = { createEvent, deleteEvent, updateEvent };
