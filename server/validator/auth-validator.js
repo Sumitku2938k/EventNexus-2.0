@@ -3,22 +3,32 @@ const {z} = require('zod');
 // Validation schema for user registration
 const signUpSchema = z.object({
     username: z
-        .string({ required_error: 'Username is required' })
-        .trim() // Remove leading and trailing whitespace
-        .min(3, { message: 'Username must be at least 3 characters long' })
-        .max(20, { message: 'Username must be at most 20 characters long' }),
-    email: z
-        .string({ required_error: 'Email is required' })
-        .trim() 
-        .lowercase() // Convert email to lowercase
-        .email({ message: 'Invalid email address' })
-        .min(5, { message: 'Email must be at least 5 characters long' })
-        .max(50, { message: 'Email must be at most 50 characters long' }),
-    password: z
-        .string({ required_error: 'Password is required' })
+        .string()
         .trim()
-        .min(6, { message: 'Password must be at least 6 characters long' })
-        .max(100, { message: 'Password must be at most 100 characters long' }),
+        .min(3, "Username must be at least 3 characters")
+        .max(20, "Username too long"),
+
+    email: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .email("Invalid email"),
+
+    password: z
+        .string()
+        .min(6, "Password must be at least 6 characters")
 });
 
-module.exports = { signUpSchema };
+const loginSchema = z.object({
+    email: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .email("Invalid email"),
+
+    password: z
+        .string()
+        .min(6, "Password must be at least 6 characters")
+});
+
+module.exports = { signUpSchema, loginSchema };
