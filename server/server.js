@@ -8,6 +8,7 @@ const eventRouter = require('./router/event-router');
 const adminRouter = require('./router/admin-router');
 const connectDB = require('./utils/db');
 const fileUpload = require('express-fileupload');
+const errorMiddleware = require('./middlewares/error-middleware');
 
 app.use(express.json()); // for parsing application/
 app.use(fileUpload({ // Enable file upload handling
@@ -18,6 +19,9 @@ app.use(fileUpload({ // Enable file upload handling
 app.use('/api/auth', router); //Restful API for authentication and user management
 app.use('/api/events', eventRouter); //Restful API for event management
 app.use('/api/admin', adminRouter); //Restful API for admin dashboard and management
+
+// Global error handling middleware
+app.use(errorMiddleware);
 
 // Start the server
 connectDB().then(() => { // Ensure DB is connected before starting server
