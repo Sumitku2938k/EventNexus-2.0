@@ -1,28 +1,43 @@
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register';
+import Register from './pages/SignUp';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
 import CreateEvent from './pages/CreateEvent';
 import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Signup from './pages/SignUp';
 
 function App() {
 
   return (
     <>
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Register />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/events/:id" element={<EventDetail />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+
+      {/* 🔥 FULL PAGE BACKGROUND */}
+      <div className="min-h-screen bg-linear-to-r from-indigo-500 to-purple-600">
+        
+        {/* Navbar */}
+        <Navbar />
+
+        {/* 🔥 WHITE MAIN CONTAINER */}
+        <div className="px-20 py-5 mx-auto max-w-11xl">
+          <div className="bg-white rounded-2xl min-h-[85vh] p-6 shadow-xl border border-gray-200 flex items-center justify-center">
+
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
+              <Route path="/create-event" element={<CreateEvent />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+
     </Router>
     </>
   )
