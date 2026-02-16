@@ -9,8 +9,17 @@ const adminRouter = require('./router/admin-router');
 const connectDB = require('./utils/db');
 const fileUpload = require('express-fileupload');
 const errorMiddleware = require('./middlewares/error-middleware');
+const cors = require("cors");
 
-app.use(express.json()); // for parsing application/
+//Handling cors policy issues
+const corsOptions = {
+    origin: "http://localhost:5173",
+    methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
+    credentials: true,
+};
+app.use(cors(corsOptions));
+
+app.use(express.json()); // Middleware to parse JSON bodies
 app.use(fileUpload({ // Enable file upload handling
   useTempFiles: true
 }));

@@ -1,5 +1,6 @@
 import { UserPlus, User, Mail, Lock, UserCog } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -8,11 +9,27 @@ const Signup = () => {
     password: "",
     role: "student",
   });
+  const Navigate = useNavigate();
+
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if(response.ok){
+        
+      }
+    } catch (error) {
+      
+    }
     console.log("User registered: ",user);
     setUser({name: "", email: "", password: "", role: "student",});
   };
