@@ -15,7 +15,7 @@ const Home = () => {
 
                     <Link
                         to="/events"
-                        className="flex items-center gap-2 px-6 py-3 rounded-md bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium hover:opacity-90 transition"
+                        className="flex items-center gap-2 px-6 py-3 rounded-md bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium shadow-md hover:shadow-xl transition"
                     >
                         <List size={18} />
                         Browse Events
@@ -23,7 +23,7 @@ const Home = () => {
 
                     <Link
                         to="/create-event"
-                        className="flex items-center gap-2 px-6 py-3 rounded-md bg-green-500 text-white font-medium hover:bg-green-600 transition"
+                        className="flex items-center gap-2 px-6 py-3 rounded-md bg-green-500 text-white font-medium shadow-md hover:shadow-xl transition"
                     >
                         <Plus size={18} />
                         Create Event
