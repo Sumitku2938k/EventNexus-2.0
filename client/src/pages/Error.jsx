@@ -27,7 +27,7 @@ export default function Error() {
         
                 <NavLink
                     to="/"
-                    className="px-5 py-2 rounded-md bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:opacity-90 transition"
+                    className="px-5 py-2 rounded-md bg-linear-to-r from-indigo-500 to-purple-500 text-white font-medium hover:opacity-90 transition"
                 >
                     Return Home
                 </NavLink>
