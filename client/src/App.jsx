@@ -8,6 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Signup from './pages/SignUp';
+import Error from './pages/Error';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/create-event" element={<CreateEvent />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path='*' element={<Error />} />
             </Routes>
           </div>
         </div>
