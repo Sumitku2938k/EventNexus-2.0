@@ -1,20 +1,45 @@
 import { LogIn, Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ error }) => {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
+    const Navigate = useNavigate();
 
     const handleInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("User logged in: ",user);
-        setUser({ email: "", password: "" });
+        //Handling the form submission
+        try {
+            const response = await fetch(`http://localhost:5000/api/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            });
+            console.log("login form data : ", response);
+
+            const res_data = await response.json();
+            console.log("Response from Server : ", res_data);
+
+            if (response.ok) {
+                setUser({ email: "", password: "" });
+                setTimeout(() => Navigate("/"), 3000);
+            } else {
+                setTimeout(() => setSuccess(""), 2000);
+                console.log("Error in response while trying to login");
+            }
+        } catch (error) {
+            console.log("Login Error: ", error);
+        }
     };
     return (
         <div className="flex items-center justify-center h-full w-full">
