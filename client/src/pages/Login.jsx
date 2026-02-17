@@ -2,6 +2,7 @@ import { LogIn, Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Login = ({ error }) => {
     const [user, setUser] = useState({
@@ -33,9 +34,10 @@ const Login = ({ error }) => {
             if (response.ok) {
                 setUser({ email: "", password: "" });
                 setTimeout(() => Navigate("/"), 3000);
+                toast.success("Login Successful");
             } else {
-                setTimeout(() => setSuccess(""), 2000);
                 console.log("Error in response while trying to login");
+                toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
             }
         } catch (error) {
             console.log("Login Error: ", error);

@@ -1,6 +1,7 @@
 import { UserPlus, User, Mail, Lock, UserCog } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -16,22 +17,33 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("User registered:", user);
+
+    //Handling the form submission
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch(`http://localhost:5000/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(user),
-      });
+      });    
+      console.log("response data : ", response);
+
+      const res_data = await response.json();
+      console.log("Response from Server : ", res_data.extraDetails);
+
       if(response.ok){
-        console.log("Response saved in online db", response);
+        setUser({ username: "", email: "", phone: "", password: "" });
+        setTimeout(() => Navigate("/"), 3000); //Navigate to home page after 3 seconds
+        toast.success("Login Successful");
+      } else {
+        console.log("Error in response while trying to register");
+        toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
       }
     } catch (error) {
-      console.log("Registration Error: ",error);
+      console.log("Registration Error: ",error)
     }
-    console.log("User registered: ",user);
-    setUser({name: "", email: "", password: "", role: "student",});
   };
 
   return (
