@@ -25,10 +25,10 @@ const Signup = () => {
         body: JSON.stringify(user),
       });
       if(response.ok){
-        
+        console.log("Response saved in online db", response);
       }
     } catch (error) {
-      
+      console.log("Registration Error: ",error);
     }
     console.log("User registered: ",user);
     setUser({name: "", email: "", password: "", role: "student",});
