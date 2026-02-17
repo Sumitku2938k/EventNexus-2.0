@@ -2,6 +2,7 @@ import { UserPlus, User, Mail, Lock, UserCog } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import {useAuth} from '../utils/auth.jsx';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -11,6 +12,7 @@ const Signup = () => {
     role: "student",
   });
   const Navigate = useNavigate();
+  const { storeTokenInLS } = useAuth();
 
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -34,6 +36,10 @@ const Signup = () => {
       console.log("Response from Server : ", res_data.extraDetails);
 
       if(response.ok){
+        // Store token and user data
+        // Adjust 'res_data.token' based on your actual API response
+        storeTokenInLS(res_data.token, { name: user.name, role: user.role });
+
         setUser({ username: "", email: "", phone: "", password: "" });
         setTimeout(() => Navigate("/"), 3000); //Navigate to home page after 3 seconds
         toast.success("Login Successful");

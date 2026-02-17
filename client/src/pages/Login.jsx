@@ -3,13 +3,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import {useAuth} from '../utils/auth.jsx';
 
-const Login = ({ error }) => {
+const Login = () => {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
     const Navigate = useNavigate();
+    const { storeTokenInLS } = useAuth();
 
     const handleInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -28,10 +30,13 @@ const Login = ({ error }) => {
             });
             console.log("login form data : ", response);
 
-            const res_data = await response.json();
-            console.log("Response from Server : ", res_data);
-
             if (response.ok) {
+                const res_data = await response.json();
+                console.log("Response from Server : ", res_data);
+                // Store token and user data (assuming res_data contains token and user object)
+                // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
+                storeTokenInLS(res_data.token, res_data.user || { name: "User", role: "student" }); 
+                
                 setUser({ email: "", password: "" });
                 setTimeout(() => Navigate("/"), 3000);
                 toast.success("Login Successful");

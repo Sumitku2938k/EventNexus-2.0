@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { CalendarDays, List, LogIn, UserPlus, UserCircle, LogOut, Plus, LayoutDashboard, GraduationCap } from "lucide-react";
 import { useState } from "react";
 
-const Navbar = ({ currentUser }) => {
+const Navbar = ({ currentUser, onLogout }) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -40,7 +40,7 @@ const Navbar = ({ currentUser }) => {
                                 {open && (
                                     <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-md shadow-lg">
                                         <div className="px-4 py-2 text-xs text-gray-400 border-b border-gray-800">Logged in as {currentUser.role}</div>
-                                        <button className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-800"><LogOut size={16} />Logout</button>
+                                        <button onClick={onLogout} className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-800"><LogOut size={16} />Logout</button>
                                     </div>
                                 )}
                             </div>
