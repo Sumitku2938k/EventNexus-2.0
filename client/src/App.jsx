@@ -15,12 +15,12 @@ function App() {
   return (
     <>
     <Router>
+      
+      {/* Navbar */}
+      <Navbar />
 
       {/* 🔥 FULL PAGE BACKGROUND */}
       <div className="min-h-screen bg-linear-to-r from-indigo-500 to-purple-600">
-        
-        {/* Navbar */}
-        <Navbar />
 
         {/* 🔥 WHITE MAIN CONTAINER */}
         <div className="px-20 py-5 mx-auto max-w-11xl">
