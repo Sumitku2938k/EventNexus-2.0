@@ -32,17 +32,16 @@ const Signup = () => {
       });    
       console.log("response data : ", response);
 
-      const res_data = await response.json();
-      console.log("Response from Server : ", res_data.extraDetails);
-
       if(response.ok){
         // Store token and user data
         // Adjust 'res_data.token' based on your actual API response
-        storeTokenInLS(res_data.token, { name: user.name, role: user.role });
+        const res_data = await response.json();
+        console.log("Response from Server : ", res_data);
+        storeTokenInLS(res_data.token);
 
-        setUser({ username: "", email: "", phone: "", password: "" });
+        setUser({ name: "", email: "", password: "" });
         setTimeout(() => Navigate("/"), 3000); //Navigate to home page after 3 seconds
-        toast.success("Login Successful");
+        toast.success("Registration Successful");
       } else {
         console.log("Error in response while trying to register");
         toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
