@@ -32,10 +32,10 @@ const Login = () => {
 
             if (response.ok) {
                 const res_data = await response.json();
-                console.log("Response from Server : ", res_data);
+                console.log("Response from Server while login: ", res_data);
                 // Store token and user data (assuming res_data contains token and user object)
                 // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
-                storeTokenInLS(res_data.token, res_data.user || { name: "User", role: "student" }); 
+                storeTokenInLS(res_data.token);
                 
                 setUser({ email: "", password: "" });
                 setTimeout(() => Navigate("/"), 3000);

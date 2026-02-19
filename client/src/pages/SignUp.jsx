@@ -33,10 +33,9 @@ const Signup = () => {
       console.log("response data : ", response);
 
       if(response.ok){
-        // Store token and user data
-        // Adjust 'res_data.token' based on your actual API response
         const res_data = await response.json();
-        console.log("Response from Server : ", res_data);
+        console.log("Response from Server while registering: ", res_data);
+        console.log("Token stored in localStorage: ", res_data.token);
         storeTokenInLS(res_data.token);
 
         setUser({ name: "", email: "", password: "" });
