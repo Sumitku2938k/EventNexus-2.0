@@ -42,7 +42,7 @@ const Signup = () => {
         setTimeout(() => Navigate("/"), 3000); //Navigate to home page after 3 seconds
         toast.success("Registration Successful");
       } else {
-        console.log("Error in response while trying to register");
+        console.log("Error in response while trying to register: ");
         toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
       }
     } catch (error) {
