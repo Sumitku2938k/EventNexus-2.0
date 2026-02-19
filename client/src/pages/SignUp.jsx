@@ -34,7 +34,7 @@ const Signup = () => {
 
       if(response.ok){
         const res_data = await response.json();
-        console.log("Response from Server while registering: ", res_data);
+        console.log("Response from Server while registering: ", res_data.extraDetails);
         console.log("Token stored in localStorage: ", res_data.token);
         storeTokenInLS(res_data.token);
 
