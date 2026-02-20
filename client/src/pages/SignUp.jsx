@@ -12,7 +12,7 @@ const Signup = () => {
     role: "student",
   });
   const Navigate = useNavigate();
-  const { storeTokenInLS } = useAuth();
+  const { storeTokenInLS, storeUserInLS } = useAuth();
 
   const handleInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -34,9 +34,10 @@ const Signup = () => {
 
       if(response.ok){
         const res_data = await response.json();
-        console.log("Response from Server while registering: ", res_data.extraDetails);
+        console.log("Response from Server while registering: ", res_data);
         console.log("Token stored in localStorage: ", res_data.token);
         storeTokenInLS(res_data.token);
+        storeUserInLS(res_data.user);
 
         setUser({ name: "", email: "", password: "" });
         setTimeout(() => Navigate("/"), 3000); //Navigate to home page after 3 seconds

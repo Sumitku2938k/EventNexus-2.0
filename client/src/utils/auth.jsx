@@ -7,9 +7,12 @@ export const AuthProvider = ({ children }) => {
     const storeTokenInLS = (serverToken) => {
         localStorage.setItem("token", serverToken);
     };
+    const storeUserInLS = (serverUser) => {
+        localStorage.setItem("user", JSON.stringify(serverUser));
+    };
 
     return (
-        <AuthContext.Provider value={{ storeTokenInLS }}>
+        <AuthContext.Provider value={{ storeTokenInLS, storeUserInLS }}>
             {children}
         </AuthContext.Provider>
     );

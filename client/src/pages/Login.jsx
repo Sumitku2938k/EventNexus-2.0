@@ -11,7 +11,7 @@ const Login = () => {
         password: "",
     });
     const Navigate = useNavigate();
-    const { storeTokenInLS } = useAuth();
+    const { storeTokenInLS, storeUserInLS } = useAuth();
 
     const handleInputChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
@@ -36,6 +36,7 @@ const Login = () => {
                 // Store token and user data (assuming res_data contains token and user object)
                 // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
                 storeTokenInLS(res_data.token);
+                storeUserInLS(res_data.user);
                 
                 setUser({ email: "", password: "" });
                 setTimeout(() => Navigate("/"), 3000);
