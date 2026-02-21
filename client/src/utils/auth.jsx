@@ -22,6 +22,14 @@ export const AuthProvider = ({ children }) => {
     console.log("isLoggedIn : ", isLoggedIn);
 
     //Tackling the Logout functionality
+    const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setToken(null);
+        setUser(null);
+    };
+
+    //Tackling the Logout functionality
     const LogoutUser = () => {
         setToken("");
         setUser(null);
@@ -30,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, storeUserInLS, user, authorizationToken}                                                                                                                                                                                                                                                                                                                 }>
+        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, storeUserInLS, user, authorizationToken, logout}                                                                                                                                                                                                                                                                                                                 }>
             {children}
         </AuthContext.Provider>
     );

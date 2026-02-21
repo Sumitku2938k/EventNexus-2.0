@@ -1,6 +1,5 @@
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/SignUp';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
 import CreateEvent from './pages/CreateEvent';
@@ -9,6 +8,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Signup from './pages/SignUp';
 import Error from './pages/Error';
+import Logout from './pages/Logout';
 
 function App() {
 
@@ -30,6 +30,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/logout" element={<Logout />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/create-event" element={<CreateEvent />} />
