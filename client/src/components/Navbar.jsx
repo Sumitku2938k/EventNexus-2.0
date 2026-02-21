@@ -1,11 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { CalendarDays, List, LogIn, UserPlus, UserCircle, LogOut, Plus, LayoutDashboard, GraduationCap } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../utils/auth";
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const { user, isLoggedIn, logout } = useAuth();
+
+    useEffect(() => {
+        if (open) {
+            const timer = setTimeout(() => {
+            setOpen(false);
+        }, 3000); // 3 sec
+
+        return () => clearTimeout(timer); 
+    }
+}, [open]);
 
     return (
         <nav className="sticky top-0 z-50 bg-gray-900 border-b border-gray-800">
