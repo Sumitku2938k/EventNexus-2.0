@@ -90,7 +90,7 @@ const Signup = () => {
           {/* Role */}
           <div>
             <label className="flex items-center gap-2 text-sm font-medium mb-1"><UserCog size={16} /> I am a</label>
-            <select className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+            <select className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400" name="role" onChange={handleInputChange} value={user.role}>
               <option value="student">🎓 Student</option>
               <option value="admin">👨‍💼 Admin</option>
             </select>
