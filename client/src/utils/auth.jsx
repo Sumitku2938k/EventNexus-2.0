@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
-
+import { useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
     const authorizationToken = `Bearer ${token}`;
 
     //Store token in local storage
