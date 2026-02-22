@@ -4,7 +4,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+    const [user, setUser] = useState("");
     const authorizationToken = `Bearer ${token}`;
 
     //Store token in local storage
@@ -29,13 +29,33 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    //Tackling the Logout functionality
-    const LogoutUser = () => {
-        setToken("");
-        setUser(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+    //JWT Authentication - to get the currently loggedIn user data
+    const userAuthentication = async () => {
+        try {
+            if (!token) return;
+
+            const response = await fetch(`http://localhost:5000/api/auth/user`, {
+                method: "GET",
+                headers: {
+                    Authorization: authorizationToken,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data.userData);
+                console.log("Authenticated user data : ", data.userData);
+            } else {
+                console.error("Failed to fetch user data");
+            }
+        } catch (error) {
+            console.error("Error in fetching user data : ", error);
+        }
     }
+
+    useEffect(() => {
+        userAuthentication();
+    }, [token])
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, storeUserInLS, user, authorizationToken, logout}                                                                                                                                                                                                                                                                                                                 }>
