@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Signup from './pages/SignUp';
 import Error from './pages/Error';
 import Logout from './pages/Logout';
+import { PrivateRoute, AdminRoute } from "./Routes/ProtectedRoutes";
 
 function App() {
 
@@ -31,16 +32,43 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/logout" element={<Logout />} />
-              <Route path="/events" element={<Events />} />
-              <Route path="/events/:id" element={<EventDetail />} />
-              <Route path="/create-event" element={<CreateEvent />} />
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route 
+                path="/events" 
+                element={
+                  <PrivateRoute>
+                    <Events />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/events/:id" 
+                element={
+                  <PrivateRoute>
+                    <EventDetail />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/create-event" 
+                element={
+                  <AdminRoute>
+                    <CreateEvent />
+                  </AdminRoute>
+                }
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
+                }
+              />
               <Route path='*' element={<Error />} />
             </Routes>
           </div>
         </div>
       </div>
-
     </Router>
     </>
   )
