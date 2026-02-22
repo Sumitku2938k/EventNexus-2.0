@@ -64,14 +64,6 @@ const Login = () => {
                     <p className="text-gray-500 text-sm">Login to manage college events</p>
                 </div>
 
-                {/* Error Alert */}
-                {/* {error && (
-                    <div className="mb-4 px-4 py-2 rounded-md bg-red-100 text-red-600 text-sm flex items-center justify-between">
-                            <span>{error}</span>
-                        <button className="text-red-500 text-lg leading-none">&times;</button>
-                    </div>
-                )} */}
-
                 {/* Form */}
                 <form className="space-y-4" onSubmit={handleSubmit}>
 
