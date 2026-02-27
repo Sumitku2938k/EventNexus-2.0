@@ -2,7 +2,7 @@ import { Calendar, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const EventCard = ({ event }) => {
-    const { name, description, date, registrationFee, poster } = event;
+    const { _id, name, description, date, registrationFee, poster } = event;
 
     return (
         <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">

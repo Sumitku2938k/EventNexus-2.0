@@ -3,7 +3,7 @@ const Event = require('../models/event-model');
 const getAllEvents = async (req, res) => {
     try {
         const events = await Event.find();
-        console.log("All Events Data: ", events);
+        // console.log("All Events Data: ", events); // debug log removed to avoid cluttering the terminal
 
         if(!events || events.length === 0){
             return res.status(404).json({ message: 'No events found' });

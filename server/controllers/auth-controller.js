@@ -56,4 +56,15 @@ const login = async (req, res) => {
     }
 };
 
-module.exports = { home, register, login };
+// Return currently authenticated user (requires authMiddleware earlier in route chain)
+const getUser = async (req, res) => {
+    try {
+        // authMiddleware attached req.user
+        res.status(200).json({ userData: req.user });
+    } catch (error) {
+        console.error('Error in getUser controller:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+module.exports = { home, register, login, getUser };
