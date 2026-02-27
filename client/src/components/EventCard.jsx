@@ -1,4 +1,4 @@
-import { Calendar, MapPin, IndianRupee } from "lucide-react";
+import { Calendar, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const EventCard = ({ event }) => {
@@ -12,11 +12,6 @@ const EventCard = ({ event }) => {
 
             {/* Content */}
             <div className="p-4">
-
-                {/* Category Badge */}
-                <span className="inline-block mb-2 px-3 py-1 text-xs font-medium bg-indigo-100 text-indigo-600 rounded-full">
-                    {category}
-                </span>
 
                 {/* Title */}
                 <h3 className="text-lg font-semibold text-gray-800">
@@ -34,11 +29,6 @@ const EventCard = ({ event }) => {
                     <p className="flex items-center gap-2">
                         <Calendar size={16} className="text-blue-500" />
                         <span><strong>Date:</strong> {new Date(date).toDateString()}</span>
-                    </p>
-
-                    <p className="flex items-center gap-2">
-                        <MapPin size={16} className="text-red-500" />
-                        <span><strong>Venue:</strong> {venue}</span>
                     </p>
 
                     <p className="flex items-center gap-2">
