@@ -60,7 +60,9 @@ const login = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         // authMiddleware attached req.user
-        res.status(200).json({ userData: req.user });
+        const userData = req.user; // Extract user data from request object
+        console.log("User Data: ", userData); // debug log
+        res.status(200).json({ message: 'User fetched successfully', user: userData});
     } catch (error) {
         console.error('Error in getUser controller:', error);
         res.status(500).json({ message: 'Internal Server Error' });
