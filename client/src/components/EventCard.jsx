@@ -39,9 +39,9 @@ const EventCard = ({ event }) => {
                 </div>
 
                 {/* Button */}
-                <Link to={`/events/${_id}`} className="mt-4 flex items-center justify-center gap-2 w-full py-2 rounded-md bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium hover:opacity-90 transition">
+                <div className="mt-4 flex items-center justify-center gap-2 w-full py-2 rounded-md bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium hover:opacity-90 transition">
                     View Details
-                </Link>
+                </div>
 
             </div>
         </Link>

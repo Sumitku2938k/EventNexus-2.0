@@ -1,7 +1,7 @@
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Events from './pages/Events';
-import EventDetail from './pages/EventDetail';
+import EventDetail from './components/EventDetail';
 import CreateEvent from './pages/CreateEvent';
 import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
