@@ -60,6 +60,7 @@ const login = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         // authMiddleware attached req.user
+        console.log("User Token:", req.token);
         res.status(200).json({ userData: req.user });
     } catch (error) {
         console.error('Error in getUser controller:', error);

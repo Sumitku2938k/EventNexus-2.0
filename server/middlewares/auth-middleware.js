@@ -9,7 +9,6 @@ const authMiddleware = async (req, res, next) => {
 
     // Remove "Bearer " prefix if present
     const jwtToken = token.replace("Bearer ", "");
-    console.log("Received token:", jwtToken); // Log the received token for debugging   
 
     try {
         const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY); // Verify JWT token using secret key from environment variables
