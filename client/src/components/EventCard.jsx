@@ -5,10 +5,10 @@ const EventCard = ({ event }) => {
     const { _id, name, description, date, registrationFee, poster } = event;
 
     return (
-        <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+        <Link to={`/events/${_id}`} className="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-200 ease-in-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-lg active:scale-95">
             
             {/* Image */}
-            <img src={poster} alt={name} className="w-full h-48 object-cover" />
+            <img src={poster} alt={name} className="w-full h-60 object-fill" />
 
             {/* Content */}
             <div className="p-4">
@@ -44,7 +44,7 @@ const EventCard = ({ event }) => {
                 </Link>
 
             </div>
-        </div>
+        </Link>
     );
 };
 
