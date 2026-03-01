@@ -54,7 +54,7 @@ const deleteEvent = async (req, res) => {
             return res.status(404).json({ message: 'Event not found' });
         }
 
-        if (event.createdBy.toString() !== req.user._id.toString()) {  // 3. Ownership check
+        if (req.user.role !== 'admin') {  // 3. Ownership check
             return res.status(403).json({ message: 'Unauthorized to delete this event' });
         }
 

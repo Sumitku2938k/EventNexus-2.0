@@ -31,6 +31,21 @@ const EventDetail = () => {
       setLoading(false);
     }
   };
+  //Delete the event on clicking delete btn
+    let deleteEvent = async (id) => {
+        const response = await fetch(`http://localhost:5000/api/admin/events/delete/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: authorizationToken, 
+            },
+        });
+        if(response.ok){
+            Navigate("/events"); //Redirect to events page after deletion
+            toast.success("Event deleted successfully");
+        } else {
+            toast.error("Failed to delete event");
+        }
+    }
 
   useEffect(() => {
     getEventData();
