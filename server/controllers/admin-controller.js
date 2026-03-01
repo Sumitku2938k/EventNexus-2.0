@@ -81,7 +81,16 @@ const updateEvent = async (req, res) => {
             return res.status(403).json({ message: 'Unauthorized to update this event' });
         }
 
-        const updatedEvent = await Event.findByIdAndUpdate(id, { name, description, date, venue, registrationFee, category }, { new: true });
+        let posterUrl = "";
+
+        // file check and upload to Cloudinary
+        if (req.files && req.files.poster) {
+            const file = req.files.poster;
+            const result = await cloudinary.uploader.upload(file.tempFilePath); // upload using await (NO callback)
+            posterUrl = result.secure_url;
+        }
+        
+        const updatedEvent = await Event.findByIdAndUpdate(id, { name, description, date, venue, registrationFee, category, poster: posterUrl }, { new: true });
         res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
     } catch (error) {
         console.error('Error updating event:', error);
