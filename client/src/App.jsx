@@ -49,7 +49,7 @@ function App() {
                 }
               />
               <Route 
-                path="/create-event" 
+                path="/events/new" 
                 element={
                   <AdminRoute>
                     <CreateEvent />
