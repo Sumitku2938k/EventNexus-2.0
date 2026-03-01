@@ -103,8 +103,8 @@ const UpdateEvent = () => {
                 formData.append("poster", poster);
             }
 
-            const response = await fetch(`http://localhost:5000/api/admin/events/${id}`, {
-                method: "PUT",
+            const response = await fetch(`http://localhost:5000/api/admin/events/update/${id}`, {
+                method: "PATCH",
                 headers: {
                     Authorization: authorizationToken,
                 },
