@@ -59,7 +59,7 @@ const CreateEvent = () => {
       formData.append("poster", poster); // ⚠️ IMPORTANT
     }
 
-    const response = await fetch("http://localhost:5000/api/events", {
+    const response = await fetch("http://localhost:5000/api/admin/events/create", {
       method: "POST",
       headers: {
         Authorization: authorizationToken,
