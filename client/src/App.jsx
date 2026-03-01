@@ -10,6 +10,7 @@ import Signup from './pages/SignUp';
 import Error from './pages/Error';
 import Logout from './pages/Logout';
 import { PrivateRoute, AdminRoute } from "./Routes/ProtectedRoutes";
+import UpdateEvent from './pages/UpdateEvent';
 
 function App() {
 
@@ -53,6 +54,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <CreateEvent />
+                  </AdminRoute>
+                }
+              />
+              <Route 
+                path="/events/:id/edit" 
+                element={
+                  <AdminRoute>
+                    <UpdateEvent />
                   </AdminRoute>
                 }
               />

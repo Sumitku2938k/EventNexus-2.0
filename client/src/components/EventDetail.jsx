@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/auth';
 import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users } from "lucide-react";
 
@@ -8,6 +8,7 @@ const EventDetail = () => {
   const { authorizationToken, user } = useAuth();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  let Navigate = useNavigate();
 
   const getEventData = async () => {
     try {
@@ -114,7 +115,7 @@ const EventDetail = () => {
           <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
             {user?.role === "admin" ? (
               <>
-                <button className="flex-1 bg-blue-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
+                <button className="flex-1 bg-blue-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2" onClick={() => Navigate(`/events/${id}/edit`)}>
                   <Edit size={20} /> Edit Event
                 </button>
                 <button className="flex-1 bg-red-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-red-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
