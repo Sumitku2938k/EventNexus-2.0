@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Calendar, MapPin, IndianRupee, ImagePlus, Tag } from "lucide-react";
+import { Calendar, MapPin, IndianRupee, ImagePlus, Type, AlignLeft, Layers, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../utils/auth";
 
@@ -14,7 +14,7 @@ const CreateEvent = () => {
     date: "",
     venue: "",
     category: "",
-    registrationFee: 0,
+    registrationFee: "",
   });
 
   const [poster, setPoster] = useState(null);
@@ -28,16 +28,18 @@ const CreateEvent = () => {
   // handle image
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setPoster(file);
-
     if (file) {
+      setPoster(file);
       const reader = new FileReader();
       reader.onload = (e) => setPreview(e.target.result);
       reader.readAsDataURL(file);
-    } else {
-      setPreview(null);
     }
   };
+
+  const removeImage = () => {
+    setPoster(null);
+    setPreview(null);
+  }
 
   // submit
   const handleSubmit = async (e) => {
@@ -61,7 +63,6 @@ const CreateEvent = () => {
       method: "POST",
       headers: {
         Authorization: authorizationToken,
-        // ❌ Content-Type mat lagana
       },
       body: formData,
     });
@@ -69,7 +70,7 @@ const CreateEvent = () => {
     const data = await response.json();
 
     if (response.ok) {
-      toast.success("Event Created");
+        toast.success("Event Created Successfully");
       navigate("/events");
     } else {
       toast.error(data.message || "Error");
@@ -80,83 +81,77 @@ const CreateEvent = () => {
 };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 p-4">
-      
-      <div className="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6">
+    <div className="w-full max-w-3xl mx-auto">
         
         {/* Header */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold flex items-center justify-center gap-2">
-            <Tag className="text-indigo-500" /> Create New Event
-          </h2>
-          <p className="text-gray-500 text-sm">
-            Fill in the details to create an exciting event
-          </p>
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-800">Create New Event</h2>
+          <p className="text-gray-500 mt-2">Fill in the details to organize your next big event</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
 
           {/* Name */}
-          <div>
-            <label className="flex items-center gap-2 text-sm font-medium mb-1">
-              <Tag size={16} /> Event Name
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <Type size={18} className="text-indigo-500" /> Event Name
             </label>
             <input
               type="text"
               name="name"
               value={event.name}
               onChange={handleChange}
-              placeholder="Tech Fest 2025"
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
+              placeholder="e.g. Annual Tech Fest 2025"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white"
               required
             />
           </div>
 
           {/* Description */}
-          <div>
-            <label className="text-sm font-medium mb-1 block">
-              Description
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <AlignLeft size={18} className="text-indigo-500" /> Description
             </label>
             <textarea
               name="description"
               value={event.description}
               onChange={handleChange}
               rows="4"
-              placeholder="Describe your event..."
-              className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400 outline-none"
+              placeholder="Describe the event details, agenda, and highlights..."
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white resize-y"
               required
             />
           </div>
 
           {/* Row */}
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-6">
 
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium mb-1">
-                <Calendar size={16} /> Date
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Calendar size={18} className="text-indigo-500" /> Date
               </label>
               <input
                 type="date"
                 name="date"
                 value={event.date}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white"
                 required
               />
             </div>
 
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium mb-1">
-                <MapPin size={16} /> Venue
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <MapPin size={18} className="text-indigo-500" /> Venue
               </label>
               <input
                 type="text"
                 name="venue"
                 value={event.venue}
                 onChange={handleChange}
-                placeholder="Main Auditorium"
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                placeholder="e.g. Main Auditorium"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white"
                 required
               />
             </div>
@@ -164,29 +159,31 @@ const CreateEvent = () => {
           </div>
 
           {/* Row 2 */}
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-6">
 
-            <div>
-              <label className="text-sm font-medium mb-1 block">
-                Category
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <Layers size={18} className="text-indigo-500" /> Category
               </label>
               <select
                 name="category"
                 value={event.category}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white"
                 required
               >
-                <option value="">Select Category</option>
+                <option value="" disabled>Select Category</option>
                 <option value="Technical">💻 Technical</option>
                 <option value="Cultural">🎭 Cultural</option>
                 <option value="Sports">⚽ Sports</option>
+                <option value="Workshop">🛠️ Workshop</option>
+                <option value="Seminar">📢 Seminar</option>
               </select>
             </div>
 
-            <div>
-              <label className="flex items-center gap-2 text-sm font-medium mb-1">
-                <IndianRupee size={16} /> Fee
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                <IndianRupee size={18} className="text-indigo-500" /> Registration Fee
               </label>
               <input
                 type="number"
@@ -194,7 +191,8 @@ const CreateEvent = () => {
                 value={event.registrationFee}
                 onChange={handleChange}
                 min="0"
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+                placeholder="0"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition outline-none bg-gray-50 focus:bg-white"
                 required
               />
             </div>
@@ -202,49 +200,52 @@ const CreateEvent = () => {
           </div>
 
           {/* Image */}
-          <div>
-            <label className="flex items-center gap-2 text-sm font-medium mb-1">
-              <ImagePlus size={16} /> Event Poster
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+              <ImagePlus size={18} className="text-indigo-500" /> Event Poster
             </label>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              className="w-full"
-              accept="image/*"
-            />
-
-            {/* Preview */}
-            {preview && (
-              <div className="mt-3 flex justify-center">
-                <img
-                  src={preview}
-                  alt="preview"
-                  className="w-40 h-40 object-cover rounded-lg border"
-                />
+            
+            {!preview ? (
+              <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-indigo-500 transition">
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <ImagePlus className="w-10 h-10 text-gray-400 mb-2" />
+                  <p className="text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                  <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF</p>
+                </div>
+                <input type="file" className="hidden" onChange={handleImageChange} accept="image/*" />
+              </label>
+            ) : (
+              <div className="relative w-full h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-300">
+                <img src={preview} alt="Preview" className="w-full h-full object-contain" />
+                <button 
+                  type="button"
+                  onClick={removeImage}
+                  className="absolute top-2 right-2 p-1.5 bg-white text-red-500 rounded-full shadow-md hover:bg-red-50 transition"
+                >
+                  <X size={20} />
+                </button>
               </div>
             )}
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4">
+          <div className="flex gap-4 pt-4">
             <button
               type="submit"
-              className="flex-1 py-2 rounded-md bg-linear-to-r from-indigo-600 to-purple-600 text-white font-medium hover:scale-105 hover:shadow-lg transition"
+              className="flex-1 py-3 rounded-lg bg-linear-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transform transition hover:-translate-y-0.5"
             >
               Create Event
             </button>
-
             <button
               type="button"
               onClick={() => navigate("/events")}
-              className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 transition"
+              className="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
             >
               Cancel
             </button>
           </div>
 
         </form>
-      </div>
     </div>
   );
 };
