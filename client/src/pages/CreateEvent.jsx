@@ -53,19 +53,21 @@ const CreateEvent = () => {
     formData.append("description", event.description);
     formData.append("date", event.date);
     formData.append("venue", event.venue);
-    formData.append("registrationFee", event.registrationFee);
+    if (event.registrationFee) {
+      formData.append("registrationFee", Number(event.registrationFee));
+    }
     formData.append("category", event.category);
 
     if (poster) {
       formData.append("poster", poster); // ⚠️ IMPORTANT
     }
 
-    const data = await createEvent(formData, authorizationToken);
+    await createEvent(formData, authorizationToken);
 
     toast.success("Event Created Successfully");
     navigate("/events");
   } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Something went wrong");
       console.log("Create Error: ", error);
   }
 };
