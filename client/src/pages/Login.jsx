@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import {useAuth} from '../utils/auth.jsx';
+import { loginUser } from "../services/api";
 
 const Login = () => {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     const { storeTokenInLS, storeUserInLS } = useAuth();
 
     const handleInputChange = (e) => {
@@ -21,31 +22,31 @@ const Login = () => {
         console.log("User logged in: ",user);
         //Handling the form submission
         try {
-            const response = await fetch(`http://localhost:5000/api/auth/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(user),
-            });
-            console.log("login form data : ", response);
+            // const response = await fetch(`http://localhost:5000/api/auth/login`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify(user),
+            // });
+            // console.log("login form data : ", response);
 
-            if (response.ok) {
-                const res_data = await response.json();
+            // if (response.ok) {
+                const res_data = await loginUser(user);
                 console.log("Response from Server while login: ", res_data);
                 // Store token and user data (assuming res_data contains token and user object)
                 // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
                 storeTokenInLS(res_data.token);
                 storeUserInLS(res_data.user);
                 
-                setUser({ email: "", password: "" });
-                setTimeout(() => Navigate("/"), 3000);
                 toast.success("Login Successful");
-            } else {
-                console.log("Error in response while trying to login");
-                toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
-            }
+                navigate("/"); // Redirect to home page after successful login
+            // } else {
+            //     console.log("Error in response while trying to login");
+            //     toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
+            // }
         } catch (error) {
+            toast.error(error.message);
             console.log("Login Error: ", error);
         }
     };
