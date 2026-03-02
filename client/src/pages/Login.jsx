@@ -22,29 +22,15 @@ const Login = () => {
         console.log("User logged in: ",user);
         //Handling the form submission
         try {
-            // const response = await fetch(`http://localhost:5000/api/auth/login`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify(user),
-            // });
-            // console.log("login form data : ", response);
-
-            // if (response.ok) {
-                const res_data = await loginUser(user);
-                console.log("Response from Server while login: ", res_data);
-                // Store token and user data (assuming res_data contains token and user object)
-                // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
-                storeTokenInLS(res_data.token);
-                storeUserInLS(res_data.user);
+            const res_data = await loginUser(user);
+            console.log("Response from Server while login: ", res_data);
+            // Store token and user data (assuming res_data contains token and user object)
+            // Adjust 'res_data.token' and 'res_data.user' based on your actual API response
+            storeTokenInLS(res_data.token);
+            storeUserInLS(res_data.user);
                 
-                toast.success("Login Successful");
-                navigate("/"); // Redirect to home page after successful login
-            // } else {
-            //     console.log("Error in response while trying to login");
-            //     toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
-            // }
+            toast.success("Login Successful");
+            navigate("/"); // Redirect to home page after successful login
         } catch (error) {
             toast.error(error.message);
             console.log("Login Error: ", error);
