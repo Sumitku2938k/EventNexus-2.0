@@ -232,14 +232,14 @@ const CreateEvent = () => {
           <div className="flex gap-4 pt-4">
             <button
               type="submit"
-              className="flex-1 py-3 rounded-lg bg-linear-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transform transition hover:-translate-y-0.5"
+              className="flex-1 py-3 rounded-lg bg-linear-to-r cursor-pointer from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:shadow-lg hover:opacity-90 transform transition hover:-translate-y-0.5"
             >
               Create Event
             </button>
             <button
               type="button"
               onClick={() => navigate("/events")}
-              className="px-6 py-3 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
+              className="px-6 py-3 rounded-lg border cursor-pointer border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition"
             >
               Cancel
             </button>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/auth';
 import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users } from "lucide-react";
+import { toast } from 'react-toastify';
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -72,23 +73,28 @@ const EventDetail = () => {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
-      <Link to="/events" className="inline-flex items-center text-gray-600 hover:text-indigo-600 mb-6 transition">
+      <Link
+        to="/events"
+        className="inline-flex items-center text-gray-600 hover:text-indigo-600 mb-6 transition"
+      >
         <ArrowLeft size={20} className="mr-2" /> Back to Events
       </Link>
 
       <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Hero Image */}
         <div className="relative h-72 md:h-105 w-full bg-gray-100 flex items-center justify-center">
-          <img 
-            src={event.poster} 
-            alt={event.name} 
+          <img
+            src={event.poster}
+            alt={event.name}
             className="max-h-full max-w-full object-contain"
           />
         </div>
 
         <div className="p-6 md:p-10">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{event.name}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {event.name}
+            </h1>
             <span className="px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full font-medium text-sm">
               Open for Registration
             </span>
@@ -112,16 +118,22 @@ const EventDetail = () => {
                 <IndianRupee size={24} />
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Registration Fee</p>
+                <p className="text-sm text-gray-500 font-medium">
+                  Registration Fee
+                </p>
                 <p className="text-lg font-semibold text-gray-800">
-                  {event.registrationFee > 0 ? `₹${event.registrationFee}` : 'Free'}
+                  {event.registrationFee > 0
+                    ? `₹${event.registrationFee}`
+                    : "Free"}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">About the Event</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              About the Event
+            </h3>
             <div className="prose max-w-none text-gray-600 leading-relaxed whitespace-pre-line">
               {event.description}
             </div>
@@ -130,10 +142,16 @@ const EventDetail = () => {
           <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
             {user?.role === "admin" ? (
               <>
-                <button className="flex-1 bg-blue-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2" onClick={() => Navigate(`/events/${id}/edit`)}>
+                <button
+                  className="flex-1 bg-blue-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2"
+                  onClick={() => Navigate(`/events/${id}/edit`)}
+                >
                   <Edit size={20} /> Edit Event
                 </button>
-                <button className="flex-1 bg-red-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-red-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
+                <button
+                  className="flex-1 bg-red-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-red-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2"
+                  onClick={() => deleteEvent(id)}
+                >
                   <Trash2 size={20} /> Delete Event
                 </button>
                 <button className="flex-1 bg-green-500 text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:bg-green-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2">
