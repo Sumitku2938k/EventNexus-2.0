@@ -89,3 +89,19 @@ export const deleteEventById = async (id, token) => {
 
     return response.json();
 };
+
+export const updateEvent = async (id, formData, token) => {
+    const res = await fetch(`${BASE_URL}/admin/events/update/${id}`, {
+        method: "PATCH",  
+        headers: {
+            Authorization: `${token}`
+        },
+        body: formData
+    });
+
+    if (!res.ok) {
+        throw new Error("Event update failed");
+    }
+
+    return res.json();
+};

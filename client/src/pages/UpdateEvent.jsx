@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Calendar, MapPin, IndianRupee, ImagePlus, Type, AlignLeft, Layers, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../utils/auth";
-// import { updateEvent } from "../services/api"
+import { updateEvent, getEventById } from "../services/api"
 
 const UpdateEvent = () => {
     const { id } = useParams();
@@ -27,33 +27,21 @@ const UpdateEvent = () => {
     useEffect(() => {
         const getEventData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/events/${id}`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: authorizationToken,
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    const { name, description, date, venue, category, registrationFee, poster } = data.event;
+                const data = await getEventById(id, authorizationToken);
+                const { name, description, date, venue, category, registrationFee, poster } = data.event;
                 
-                    // Format date for input field (YYYY-MM-DD)
-                    const formattedDate = date ? new Date(date).toISOString().split('T')[0] : "";
+                // Format date for input field (YYYY-MM-DD)
+                const formattedDate = date ? new Date(date).toISOString().split('T')[0] : "";
 
-                    setEvent({
-                        name,
-                        description,
-                        date: formattedDate,
-                        venue,
-                        category,
-                        registrationFee,
-                    });
-                    setPreview(poster); // Set existing poster as preview
-                } else {
-                    toast.error("Failed to fetch event data");
-                    navigate("/events");
-                }
+                setEvent({
+                    name,
+                    description,
+                    date: formattedDate,
+                    venue,
+                    category,
+                    registrationFee,
+                });
+                setPreview(poster); // Set existing poster as preview
             } catch (error) {
                 console.error("Error fetching event:", error);
                 toast.error("Error fetching event data");
@@ -104,22 +92,10 @@ const UpdateEvent = () => {
                 formData.append("poster", poster);
             }
 
-            const response = await fetch(`http://localhost:5000/api/admin/events/update/${id}`, {
-                method: "PATCH",
-                headers: {
-                    Authorization: authorizationToken,
-                },
-                body: formData,
-            });
+            await updateEvent(id, formData, authorizationToken);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                toast.success("Event Updated Successfully");
-                navigate(`/events/${id}`);
-            } else {
-                toast.error(data.message || "Error updating event");
-            }
+            toast.success("Event Updated Successfully");
+            navigate(`/events/${id}`);
         } catch (error) {
             console.log(error);
             toast.error("Something went wrong");
