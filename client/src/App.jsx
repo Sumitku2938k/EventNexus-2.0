@@ -25,8 +25,8 @@ function App() {
       <div className="min-h-screen bg-linear-to-r from-indigo-500 to-purple-600">
 
         {/* 🔥 WHITE MAIN CONTAINER */}
-        <div className="px-20 py-5 mx-auto max-w-11xl">
-          <div className="bg-white rounded-2xl min-h-[85vh] p-6 shadow-xl border border-gray-200 flex items-center justify-center">
+        <div className="p-6 sm:p-12 lg:p-20 mx-auto w-full max-w-screen-2xl">
+          <div className="bg-white rounded-2xl min-h-[80vh] p-6 sm:p-10 shadow-xl border border-gray-200 flex flex-col items-center justify-center">
 
             <Routes>
               <Route path="/" element={<Home />} />
