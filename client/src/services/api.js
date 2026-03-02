@@ -43,3 +43,19 @@ export const getEvents = async (token) => {
     });
     return response.json();
 };
+
+export const createEvent = async (formData, token) => {
+    const res = await fetch(`${BASE_URL}/admin/events/create`, {
+        method: "POST",
+        headers: {
+            Authorization: `${token}`
+        },
+        body: formData
+    });
+
+    if (!res.ok) {
+        throw new Error("Event creation failed");
+    }
+
+    return res.json();
+};

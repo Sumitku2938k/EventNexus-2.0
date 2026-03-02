@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Calendar, MapPin, IndianRupee, ImagePlus, Type, AlignLeft, Layers, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../utils/auth";
+import { createEvent } from '../services/api'
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -59,24 +60,13 @@ const CreateEvent = () => {
       formData.append("poster", poster); // ⚠️ IMPORTANT
     }
 
-    const response = await fetch("http://localhost:5000/api/admin/events/create", {
-      method: "POST",
-      headers: {
-        Authorization: authorizationToken,
-      },
-      body: formData,
-    });
+    const data = await createEvent(formData, authorizationToken);
 
-    const data = await response.json();
-
-    if (response.ok) {
-        toast.success("Event Created Successfully");
-      navigate("/events");
-    } else {
-      toast.error(data.message || "Error");
-    }
+    toast.success("Event Created Successfully");
+    navigate("/events");
   } catch (error) {
-    console.log(error);
+      toast.error(error.message);
+      console.log("Create Error: ", error);
   }
 };
 
