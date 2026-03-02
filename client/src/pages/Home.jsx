@@ -22,7 +22,7 @@ const Home = () => {
                     </Link>
 
                     <Link
-                        to="/create-event"
+                        to="/events/new"
                         className="flex items-center gap-2 px-6 py-3 rounded-md bg-green-500 text-white font-medium shadow-md hover:shadow-xl transition"
                     >
                         <Plus size={18} />
