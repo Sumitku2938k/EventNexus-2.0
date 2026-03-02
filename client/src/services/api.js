@@ -59,3 +59,18 @@ export const createEvent = async (formData, token) => {
 
     return res.json();
 };
+
+export const getEventById = async (id, token) => {
+    const response = await fetch(`${BASE_URL}/events/${id}`, {
+        method: "GET",
+        headers: {
+            Authorization: `${token}`
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Event fetch failed");
+    }
+
+    return response.json();
+};

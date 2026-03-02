@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/auth';
 import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users } from "lucide-react";
 import { toast } from 'react-toastify';
+import { getEventById } from '../services/api';
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -13,21 +14,11 @@ const EventDetail = () => {
 
   const getEventData = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/events/${id}`, {
-        method: "GET",
-        headers: {
-          Authorization: authorizationToken,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setEvent(data.event);
-      } else {
-        console.error("Failed to fetch event data");
-      }
+      const data = await getEventById(id, authorizationToken);
+      setEvent(data.event);
     } catch (error) {
-      console.error("Error fetching event data:", error);
+        toast.error(error.message || "Something went wrong");
+        console.error("Error fetching event data:", error);
     } finally {
       setLoading(false);
     }

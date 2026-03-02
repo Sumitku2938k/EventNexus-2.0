@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Calendar, MapPin, IndianRupee, ImagePlus, Type, AlignLeft, Layers, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../utils/auth";
+import { updateEvent } from "../services/api"
 
 const UpdateEvent = () => {
     const { id } = useParams();
