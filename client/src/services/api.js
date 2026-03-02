@@ -74,3 +74,18 @@ export const getEventById = async (id, token) => {
 
     return response.json();
 };
+
+export const deleteEventById = async (id, token) => {
+    const response = await fetch(`${BASE_URL}/admin/events/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `${token}`
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Event deletion failed");
+    }
+
+    return response.json();
+};

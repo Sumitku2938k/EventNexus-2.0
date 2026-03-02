@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/auth';
 import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users } from "lucide-react";
 import { toast } from 'react-toastify';
-import { getEventById } from '../services/api';
+import { getEventById, deleteEventById} from '../services/api';
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -24,20 +24,16 @@ const EventDetail = () => {
     }
   };
   //Delete the event on clicking delete btn
-    let deleteEvent = async (id) => {
-        const response = await fetch(`http://localhost:5000/api/admin/events/delete/${id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: authorizationToken, 
-            },
-        });
-        if(response.ok){
-            Navigate("/events"); //Redirect to events page after deletion
-            toast.success("Event deleted successfully");
-        } else {
-            toast.error("Failed to delete event");
-        }
+  let deleteEvent = async (id) => {
+    try {
+      await deleteEventById(id, authorizationToken);
+      toast.success("Event deleted successfully");
+      Navigate("/events");
+    } catch (error) {
+      toast.error(error.message || "Failed to delete event");
+      console.error("Delete Error: ", error);
     }
+  }
 
   useEffect(() => {
     getEventData();
