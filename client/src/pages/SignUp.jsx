@@ -24,30 +24,17 @@ const Signup = () => {
 
     //Handling the form submission
     try {
-      // const response = await fetch(`http://localhost:5000/api/auth/register`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(user),
-      // });    
-      // console.log("response data : ", response);
+      const res_data = await registerUser(user);
+      console.log("Response from Server while registering: ", res_data);
+      console.log("Token stored in localStorage: ", res_data.token);
+      
+      storeTokenInLS(res_data.token);
+      storeUserInLS(res_data.user);
 
-      // if(response.ok){
-        const res_data = await registerUser(user);
-        console.log("Response from Server while registering: ", res_data);
-        console.log("Token stored in localStorage: ", res_data.token);
-        storeTokenInLS(res_data.token);
-        storeUserInLS(res_data.user);
-
-        navigate("/"); //Navigate to home page after 3 seconds
-        toast.success("Registration Successful");
-      // } else {
-      //   console.log("Error in response while trying to register: ");
-      //   toast.error(res_data.extraDetails ? res_data.extraDetails : res_data.message);
-      // }
+      navigate("/"); //Navigate to home page after successful registration
+      toast.success("Registration Successful");
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Something went wrong");
       console.log("Registration Error: ",error)
     }
   };
