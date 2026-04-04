@@ -6,7 +6,7 @@ const home = async (req, res) => {
         res.status(200).json({ message: 'Home endpoint' });
     } catch (error) {
         console.error('Error in home controller:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error' });     
     }
 };
 

@@ -10,6 +10,7 @@ const connectDB = require('./utils/db');
 const fileUpload = require('express-fileupload');
 const errorMiddleware = require('./middlewares/error-middleware');
 const cors = require("cors");
+const path = require('path');
 
 //Handling cors policy issues
 const corsOptions = {
@@ -19,10 +20,19 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// Set view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(fileUpload({ // Enable file upload handling
   useTempFiles: true
 }));
+
+// Render setup guide on root URL
+app.get('/', (req, res) => {
+  res.render('setup-guide');
+});
 
 // Example routes
 app.use('/api/auth', router); //Restful API for authentication and user management
