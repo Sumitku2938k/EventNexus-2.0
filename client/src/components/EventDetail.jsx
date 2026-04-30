@@ -146,9 +146,12 @@ const EventDetail = () => {
                 </button>
               </>
             ) : (
-              <button className="flex-1 bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-8 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200 cursor-pointer">
+              <Link
+                to={`/events/${id}/register`}
+                className="flex-1 bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-8 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200 cursor-pointer text-center"
+              >
                 Register Now
-              </button>
+              </Link>
             )}
           </div>
         </div>
