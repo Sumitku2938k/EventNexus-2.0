@@ -2,6 +2,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Events from './pages/Events';
 import EventDetail from './components/EventDetail';
+import EventRegistration from './pages/EventRegistration';
 import CreateEvent from './pages/CreateEvent';
 import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -46,6 +47,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <EventDetail />
+                  </PrivateRoute>
+                }
+              />
+              <Route 
+                path="/events/:id/register" 
+                element={
+                  <PrivateRoute>
+                    <EventRegistration />
                   </PrivateRoute>
                 }
               />
