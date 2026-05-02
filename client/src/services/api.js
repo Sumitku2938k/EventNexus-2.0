@@ -75,6 +75,25 @@ export const getEventById = async (id, token) => {
     return response.json();
 };
 
+export const registerForEvent = async (eventId, registrationData, token) => {
+    const response = await fetch(`${BASE_URL}/events/${eventId}/register`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `${token}`,
+        },
+        body: JSON.stringify(registrationData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Event registration failed");
+    }
+
+    return data;
+};
+
 export const deleteEventById = async (id, token) => {
     const response = await fetch(`${BASE_URL}/admin/events/delete/${id}`, {
         method: "DELETE",
