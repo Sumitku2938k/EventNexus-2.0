@@ -5,6 +5,7 @@ import EventDetail from './components/EventDetail';
 import EventRegistration from './pages/EventRegistration';
 import CreateEvent from './pages/CreateEvent';
 import AdminDashboard from './pages/AdminDashboard';
+import MyRegistrations from './pages/MyRegistrations';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Signup from './pages/SignUp';
@@ -80,6 +81,14 @@ function App() {
                   <AdminRoute>
                     <AdminDashboard />
                   </AdminRoute>
+                }
+              />
+              <Route 
+                path="/dashboard/student"
+                element={
+                  <PrivateRoute>
+                    <MyRegistrations />
+                  </PrivateRoute>
                 }
               />
               <Route path='*' element={<Error />} />
