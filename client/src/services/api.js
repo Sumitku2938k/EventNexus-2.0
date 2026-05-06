@@ -124,3 +124,19 @@ export const updateEvent = async (id, formData, token) => {
 
     return res.json();
 };
+
+export const getMyRegistrations = async (token) => {
+    const response = await fetch(`${BASE_URL}/registrations/me`, {
+        method: 'GET',
+        headers: {
+            Authorization: `${token}`,
+        },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to fetch registrations');
+    }
+
+    return data;
+};
