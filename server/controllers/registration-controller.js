@@ -116,8 +116,26 @@ const getRegistrationById = async (req, res) => {
     }
 };
 
+// GET /api/registrations/me
+// Get all registrations for the currently authenticated user
+const getMyRegistrations = async (req, res) => {
+    try {
+        const userId = req.user._id;
+
+        const registrations = await Registration.find({ userId })
+            .populate('eventId', 'name description date venue poster registrationFee')
+            .sort({ registeredAt: -1 });
+
+        res.status(200).json({ count: registrations.length, registrations });
+    } catch (error) {
+        console.error('Error fetching user registrations:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = { 
     registerForEvent, 
     getEventRegistrations, 
-    getRegistrationById 
+    getRegistrationById,
+    getMyRegistrations,
 };
