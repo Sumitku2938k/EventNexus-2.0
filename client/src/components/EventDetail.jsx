@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../utils/auth';
-import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users } from "lucide-react";
+import { Calendar, IndianRupee, ArrowLeft, Edit, Trash2, Users, LogOut } from "lucide-react";
 import { toast } from 'react-toastify';
-import { getEventById, deleteEventById} from '../services/api';
+import { getEventById, deleteEventById, checkRegistration, unregisterFromEvent} from '../services/api';
 
 const EventDetail = () => {
   const { id } = useParams();
   const { authorizationToken, user } = useAuth();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [checkingRegistration, setCheckingRegistration] = useState(false);
   let Navigate = useNavigate();
 
   const getEventData = async () => {
@@ -23,6 +25,21 @@ const EventDetail = () => {
       setLoading(false);
     }
   };
+
+  const checkUserRegistration = async () => {
+    if (user?.role === "admin") return; // Skip for admins
+    
+    try {
+      setCheckingRegistration(true);
+      const data = await checkRegistration(id, authorizationToken);
+      setIsRegistered(data.isRegistered);
+    } catch (error) {
+      console.error("Error checking registration:", error);
+    } finally {
+      setCheckingRegistration(false);
+    }
+  };
+
   //Delete the event on clicking delete btn
   let deleteEvent = async (id) => {
     try {
@@ -35,8 +52,21 @@ const EventDetail = () => {
     }
   }
 
+  // Unregister from event
+  const handleUnregister = async () => {
+    try {
+      await unregisterFromEvent(id, authorizationToken);
+      toast.success("Successfully unregistered from the event");
+      setIsRegistered(false);
+    } catch (error) {
+      toast.error(error.message || "Failed to unregister");
+      console.error("Unregister Error: ", error);
+    }
+  }
+
   useEffect(() => {
     getEventData();
+    checkUserRegistration();
   }, [id]);
 
   if (loading) {
@@ -146,12 +176,24 @@ const EventDetail = () => {
                 </button>
               </>
             ) : (
-              <Link
-                to={`/events/${id}/register`}
-                className="flex-1 bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-8 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200 cursor-pointer text-center"
-              >
-                Register Now
-              </Link>
+              <>
+                {isRegistered ? (
+                  <button
+                    onClick={handleUnregister}
+                    disabled={checkingRegistration}
+                    className="flex-1 bg-red-500 text-white py-3.5 px-8 rounded-xl font-bold shadow-md hover:bg-red-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <LogOut size={20} /> Unregister
+                  </button>
+                ) : (
+                  <Link
+                    to={`/events/${id}/register`}
+                    className="flex-1 bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-8 rounded-xl font-bold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition duration-200 cursor-pointer text-center"
+                  >
+                    Register Now
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>
