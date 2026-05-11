@@ -17,4 +17,10 @@ router.route('/:eventId/register').post(
     registrationController.registerForEvent
 );
 
+// Unregister route for students
+router.route('/:eventId/unregister').delete(
+    authMiddleware,
+    registrationController.unregisterFromEvent
+);
+
 module.exports = router;
