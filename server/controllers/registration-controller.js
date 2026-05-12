@@ -133,9 +133,70 @@ const getMyRegistrations = async (req, res) => {
     }
 };
 
+// GET /api/registrations/check/:eventId
+// Check if user is registered for a specific event
+const checkRegistration = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const userId = req.user._id;
+
+        const registration = await Registration.findOne({
+            userId: userId,
+            eventId: eventId
+        });
+
+        res.status(200).json({ 
+            isRegistered: !!registration,
+            registration: registration || null
+        });
+    } catch (error) {
+        console.error('Error checking registration:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+// DELETE /api/events/:eventId/unregister
+// Unregister a user from an event
+const unregisterFromEvent = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+        const userId = req.user._id;
+
+        // Check if event exists
+        const event = await Event.findById(eventId);
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        // Find and delete the registration
+        const registration = await Registration.findOneAndDelete({
+            userId: userId,
+            eventId: eventId
+        });
+
+        if (!registration) {
+            return res.status(404).json({ 
+                message: 'You are not registered for this event' 
+            });
+        }
+
+        res.status(200).json({ 
+            message: 'Successfully unregistered from the event',
+            registration 
+        });
+
+        console.log("Registration deleted:", registration);
+    } catch (error) {
+        console.error('Error unregistering from event:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = { 
     registerForEvent, 
     getEventRegistrations, 
     getRegistrationById,
     getMyRegistrations,
+    checkRegistration,
+    unregisterFromEvent,
 };
