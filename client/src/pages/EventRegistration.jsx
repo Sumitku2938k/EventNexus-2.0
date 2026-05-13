@@ -248,7 +248,7 @@ const EventRegistration = () => {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="mt-2 w-full rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 px-6 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
+                            className="mt-2 w-full rounded-xl bg-linear-to-r cursor-pointer from-indigo-600 to-purple-600 px-6 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
                         >
                             {submitting ? "Submitting..." : "Submit Registration"}
                         </button>
