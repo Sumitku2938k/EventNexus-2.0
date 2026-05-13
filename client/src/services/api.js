@@ -140,3 +140,35 @@ export const getMyRegistrations = async (token) => {
 
     return data;
 };
+
+export const checkRegistration = async (eventId, token) => {
+    const response = await fetch(`${BASE_URL}/registrations/check/${eventId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `${token}`,
+        },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to check registration');
+    }
+
+    return data;
+};
+
+export const unregisterFromEvent = async (eventId, token) => {
+    const response = await fetch(`${BASE_URL}/events/${eventId}/unregister`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `${token}`,
+        },
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to unregister from event');
+    }
+
+    return data;
+};
