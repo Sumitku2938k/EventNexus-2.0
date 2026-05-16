@@ -48,11 +48,11 @@ const Navbar = () => {
 
                             {/* User Dropdown */}
                             <div className="relative">
-                                <button onClick={() => setOpen(!open)} className="flex items-center gap-1 text-gray-300 hover:text-indigo-400"><UserCircle size={18} />{user.name}</button>
+                                <button onClick={() => setOpen(!open)} className="flex items-center gap-1 text-gray-300 hover:text-indigo-400 cursor-pointer"><UserCircle size={18} />{user.name}</button>
                                 {open && (
                                     <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-gray-800 rounded-md shadow-lg">
                                         <div className="px-4 py-2 text-xs text-gray-400 border-b border-gray-800">Logged in as {user.role}</div>
-                                        <button onClick={logout} className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-800"><LogOut size={16} />Logout</button>
+                                        <button onClick={logout} className="w-full flex items-center gap-2 px-4 py-2 text-sm cursor-pointer hover:bg-gray-800"><LogOut size={16} />Logout</button>
                                     </div>
                                 )}
                             </div>
