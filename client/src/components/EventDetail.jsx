@@ -54,6 +54,15 @@ const EventDetail = () => {
 
   // Unregister from event
   const handleUnregister = async () => {
+    // Show confirmation dialog
+    const confirmed = window.confirm(
+      `Are you sure you want to unregister from "${event.name}"? This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return; // User cancelled the unregister
+    }
+
     try {
       await unregisterFromEvent(id, authorizationToken);
       toast.success("Successfully unregistered from the event");
