@@ -6,7 +6,7 @@ import EventRegistration from './pages/EventRegistration';
 import CreateEvent from './pages/CreateEvent';
 import AdminDashboard from './pages/AdminDashboard';
 import MyRegistrations from './pages/MyRegistrations';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Signup from './pages/SignUp';
 import Error from './pages/Error';
@@ -75,13 +75,17 @@ function App() {
                   </AdminRoute>
                 }
               />
-              <Route 
-                path="/admin" 
+              <Route
+                path="/dashboard/admin"
                 element={
                   <AdminRoute>
                     <AdminDashboard />
                   </AdminRoute>
                 }
+              />
+              <Route
+                path="/admin"
+                element={<Navigate to="/dashboard/admin" replace />}
               />
               <Route 
                 path="/dashboard/student"
