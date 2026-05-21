@@ -60,6 +60,23 @@ export const createEvent = async (formData, token) => {
     return res.json();
 };
 
+export const getAdminDashboardSummary = async (token) => {
+    const response = await fetch(`${BASE_URL}/admin/dashboard`, {
+        method: "GET",
+        headers: {
+            Authorization: `${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch dashboard summary");
+    }
+
+    return data;
+};
+
 export const getEventById = async (id, token) => {
     const response = await fetch(`${BASE_URL}/events/${id}`, {
         method: "GET",
