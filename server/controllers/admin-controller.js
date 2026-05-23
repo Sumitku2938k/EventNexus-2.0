@@ -1,4 +1,6 @@
 const Event = require('../models/event-model');
+const Registration = require('../models/registration-model');
+const User = require('../models/user-model');
 const cloudinary = require('cloudinary').v2;
 
 // Configuration
@@ -98,4 +100,79 @@ const updateEvent = async (req, res) => {
     }
 };
 
-module.exports = { createEvent, deleteEvent, updateEvent };
+const getDashboardSummary = async (req, res) => {
+    try {
+        const [totalEvents, totalStudents, totalRegistrations, categoryBreakdown, recentEvents] = await Promise.all([
+            Event.countDocuments(),
+            User.countDocuments({ role: 'student' }),
+            Registration.countDocuments(),
+            Registration.aggregate([
+                {
+                    $lookup: {
+                        from: 'events',
+                        localField: 'eventId',
+                        foreignField: '_id',
+                        as: 'event',
+                    },
+                },
+                { $unwind: '$event' },
+                {
+                    $group: {
+                        _id: '$event.category',
+                        value: { $sum: 1 },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        name: '$_id',
+                        value: 1,
+                    },
+                },
+                { $sort: { value: -1, name: 1 } },
+            ]),
+            Event.aggregate([
+                {
+                    $lookup: {
+                        from: 'registrations',
+                        localField: '_id',
+                        foreignField: 'eventId',
+                        as: 'registrations',
+                    },
+                },
+                {
+                    $addFields: {
+                        registrationCount: { $size: '$registrations' },
+                    },
+                },
+                {
+                    $project: {
+                        name: 1,
+                        category: 1,
+                        date: 1,
+                        venue: 1,
+                        registrationCount: 1,
+                        createdAt: 1,
+                    },
+                },
+                { $sort: { createdAt: -1 } },
+                { $limit: 10 },
+            ]),
+        ]);
+
+        res.status(200).json({
+            summary: {
+                totalEvents,
+                totalStudents,
+                totalRegistrations,
+            },
+            categoryBreakdown,
+            recentEvents,
+        });
+    } catch (error) {
+        console.error('Error fetching dashboard summary:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+module.exports = { createEvent, deleteEvent, updateEvent, getDashboardSummary };
