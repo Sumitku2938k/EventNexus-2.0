@@ -11,6 +11,7 @@ const validate = require('../middlewares/validate-middleware');
 router.route('/events/create').post(authMiddleware, adminMiddleware, validate(createEventSchema), adminController.createEvent); //Route for creating events
 router.route('/events/delete/:id').delete(authMiddleware, adminMiddleware, adminController.deleteEvent); //Route for deleting events
 router.route('/events/update/:id').patch(authMiddleware, adminMiddleware, validate(updateEventSchema), adminController.updateEvent); //Route for updating events
+router.route('/dashboard').get(authMiddleware, adminMiddleware, adminController.getDashboardSummary); //Route for admin dashboard summary
 
 // Registration management routes (Admin only)
 router.route('/events/:eventId/registrations').get(
