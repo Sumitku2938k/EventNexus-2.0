@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   PieChart,
   Pie,
@@ -7,6 +7,8 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useAuth } from "../utils/auth";
+import { getAdminDashboardSummary } from "../services/api";
 
 // ── Mock Data ────────────────────────────────────────────────────────────────
 const STATS = [
@@ -39,24 +41,7 @@ const STATS = [
   },
 ];
 
-const PIE_DATA = [
-  { name: "Technical", value: 3 },
-  { name: "Sports", value: 2 },
-];
 const PIE_COLORS = ["#8B85E8", "#00E5FF"];
-
-const EVENTS = [
-  { name: "Rangmanch - Drama Competition", category: "Cultural", date: "Tue Nov 18 2025", venue: "Auditorium Stage", registrations: 0 },
-  { name: "Natyanjali - Classical Dance Festival", category: "Cultural", date: "Thu Oct 30 2025", venue: "Cultural Center", registrations: 0 },
-  { name: "Robotics Workshop", category: "Technical", date: "Mon Nov 10 2025", venue: "Electronics Lab", registrations: 0 },
-  { name: "Battle of Bands", category: "Cultural", date: "Fri Nov 28 2025", venue: "Open Air Theatre", registrations: 0 },
-  { name: "Cybersecurity Summit", category: "Technical", date: "Mon Dec 15 2025", venue: "Auditorium Hall", registrations: 0 },
-  { name: "CodeSprint Challenge", category: "Technical", date: "Fri Dec 05 2025", venue: "Central Computer Lab", registrations: 0 },
-  { name: "Stand-Up Comedy Night", category: "Cultural", date: "Sat Nov 22 2025", venue: "Mini Auditorium", registrations: 0 },
-  { name: "AI/ML Workshop Series", category: "Technical", date: "Sat Oct 25 2025", venue: "Seminar Hall A", registrations: 1 },
-  { name: "Web Development Bootcamp", category: "Technical", date: "Thu Nov 20 2025", venue: "IT Lab, 2nd Floor", registrations: 0 },
-  { name: "Euphoria - Cultural Fest 2025", category: "Cultural", date: "Mon Dec 01 2025", venue: "College Ground & Main Auditorium", registrations: 0 },
-];
 
 // ── Category Badge ────────────────────────────────────────────────────────────
 function CategoryBadge({ category }) {
@@ -72,11 +57,27 @@ function CategoryBadge({ category }) {
   );
 }
 
+function formatEventDate(dateValue) {
+  if (!dateValue) return "-";
+
+  const date = new Date(dateValue);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateValue;
+  }
+
+  return date.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 // ── Stat Card ─────────────────────────────────────────────────────────────────
 function StatCard({ stat }) {
   return (
     <div
-      className="bg-white rounded-2xl shadow-sm flex items-center gap-5 px-6 py-5 flex-1 min-w-[200px]"
+      className="bg-white rounded-2xl shadow-sm flex items-center gap-5 px-6 py-5 flex-1 min-w-50"
       style={{ borderLeft: `4px solid ${stat.borderColor}` }}
     >
       <div
@@ -127,7 +128,7 @@ function Navbar({ activePage, setActivePage }) {
 }
 
 // ── Dashboard Page ────────────────────────────────────────────────────────────
-function DashboardPage() {
+function DashboardPage({ summary, categoryBreakdown, recentEvents }) {
   return (
     <div className="min-h-screen bg-[#F0F1F8] px-6 py-10">
       {/* Header */}
@@ -142,7 +143,13 @@ function DashboardPage() {
       {/* Stat Cards */}
       <div className="flex flex-wrap gap-5 justify-center mb-8">
         {STATS.map((stat) => (
-          <StatCard key={stat.id} stat={stat} />
+          <StatCard
+            key={stat.id}
+            stat={{
+              ...stat,
+              value: summary[stat.id] ?? 0,
+            }}
+          />
         ))}
       </div>
 
@@ -151,35 +158,41 @@ function DashboardPage() {
         <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-6">
           📊 Registrations by Category
         </h2>
-        <ResponsiveContainer width="100%" height={320}>
-          <PieChart>
-            <Pie
-              data={PIE_DATA}
-              cx="50%"
-              cy="50%"
-              innerRadius={90}
-              outerRadius={140}
-              paddingAngle={2}
-              dataKey="value"
-            >
-              {PIE_DATA.map((entry, index) => (
-                <Cell key={index} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        {categoryBreakdown.length > 0 ? (
+          <ResponsiveContainer width="100%" height={320}>
+            <PieChart>
+              <Pie
+                data={categoryBreakdown}
+                cx="50%"
+                cy="50%"
+                innerRadius={90}
+                outerRadius={140}
+                paddingAngle={2}
+                dataKey="value"
+              >
+                {categoryBreakdown.map((entry, index) => (
+                  <Cell key={`${entry.name}-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="h-80 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-200 rounded-2xl bg-gray-50">
+            No registration data available yet.
+          </div>
+        )}
       </div>
 
       {/* Events Table */}
-      <EventsTable />
+      <EventsTable events={recentEvents} />
     </div>
   );
 }
 
 // ── Events Table ──────────────────────────────────────────────────────────────
-function EventsTable() {
+function EventsTable({ events }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm overflow-hidden max-w-6xl mx-auto">
       <div className="px-6 py-5">
@@ -200,20 +213,20 @@ function EventsTable() {
             </tr>
           </thead>
           <tbody>
-            {EVENTS.map((event, i) => (
+            {events.length > 0 ? events.map((event) => (
               <tr
-                key={i}
+                key={event._id || `${event.name}-${event.date}`}
                 className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
               >
                 <td className="px-6 py-4 font-semibold text-gray-800">{event.name}</td>
                 <td className="px-6 py-4">
                   <CategoryBadge category={event.category} />
                 </td>
-                <td className="px-6 py-4 text-gray-600">{event.date}</td>
+                <td className="px-6 py-4 text-gray-600">{formatEventDate(event.date)}</td>
                 <td className="px-6 py-4 text-gray-600">{event.venue}</td>
                 <td className="px-6 py-4">
                   <span className="bg-[#3B82F6] text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    {event.registrations} Students
+                    {event.registrationCount ?? 0} Students
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -222,7 +235,13 @@ function EventsTable() {
                   </button>
                 </td>
               </tr>
-            ))}
+            )) : (
+              <tr>
+                <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
+                  No events found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -231,28 +250,113 @@ function EventsTable() {
 }
 
 // ── All Events Page ───────────────────────────────────────────────────────────
-function AllEventsPage() {
+function AllEventsPage({ events }) {
   return (
     <div className="min-h-screen bg-[#F0F1F8] px-6 py-10">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-extrabold text-gray-800 mb-6 flex items-center gap-2">
           📅 All Events
         </h1>
-        <EventsTable />
+        <EventsTable events={events} />
       </div>
     </div>
   );
 }
 
 // ── App Root ──────────────────────────────────────────────────────────────────
-export default function App() {
+export default function AdminDashboard() {
   const [activePage, setActivePage] = useState("dashboard");
+  const [dashboardData, setDashboardData] = useState({
+    summary: {
+      events: 0,
+      students: 0,
+      registrations: 0,
+    },
+    categoryBreakdown: [],
+    recentEvents: [],
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+  const { authorizationToken } = useAuth();
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      if (!authorizationToken) {
+        setIsLoading(false);
+        setError("Authorization token missing. Please log in again.");
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const data = await getAdminDashboardSummary(authorizationToken);
+
+        setDashboardData({
+          summary: {
+            events: data.summary?.totalEvents ?? 0,
+            students: data.summary?.totalStudents ?? 0,
+            registrations: data.summary?.totalRegistrations ?? 0,
+          },
+          categoryBreakdown: data.categoryBreakdown ?? [],
+          recentEvents: data.recentEvents ?? [],
+        });
+      } catch (fetchError) {
+        setError(fetchError.message || "Failed to load dashboard data");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDashboard();
+  }, [authorizationToken]);
+
+  const activeContent = useMemo(() => {
+    if (isLoading) {
+      return (
+        <div className="min-h-screen bg-[#F0F1F8] px-6 py-10 flex items-center justify-center">
+          <div className="text-center text-gray-600">
+            <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-4 border-[#6C63FF] border-t-transparent" />
+            Loading dashboard data...
+          </div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="min-h-screen bg-[#F0F1F8] px-6 py-10 flex items-center justify-center">
+          <div className="max-w-md rounded-2xl bg-white p-8 text-center shadow-sm border border-red-100">
+            <p className="text-lg font-bold text-gray-800 mb-2">Unable to load dashboard</p>
+            <p className="text-sm text-gray-500 mb-6">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="rounded-lg bg-[#6C63FF] px-4 py-2 text-white font-semibold hover:bg-[#5a52e0] transition-colors"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return activePage === "dashboard" ? (
+      <DashboardPage
+        summary={dashboardData.summary}
+        categoryBreakdown={dashboardData.categoryBreakdown}
+        recentEvents={dashboardData.recentEvents}
+      />
+    ) : (
+      <AllEventsPage events={dashboardData.recentEvents} />
+    );
+  }, [activePage, dashboardData, error, isLoading]);
 
   return (
     <div className="font-sans min-h-screen" style={{ background: "linear-gradient(135deg, #6C63FF 0%, #A78BFA 100%)" }}>
       <Navbar activePage={activePage} setActivePage={setActivePage} />
       <div className="mx-4 my-4 rounded-3xl overflow-hidden shadow-2xl bg-[#F0F1F8]">
-        {activePage === "dashboard" ? <DashboardPage /> : <AllEventsPage />}
+        {activeContent}
       </div>
     </div>
   );
