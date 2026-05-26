@@ -95,39 +95,7 @@ function StatCard({ stat }) {
   );
 }
 
-// ── Navbar ────────────────────────────────────────────────────────────────────
-function Navbar({ activePage, setActivePage }) {
-  return (
-    <nav className="bg-[#1E2130] text-white flex items-center justify-between px-6 py-3 sticky top-0 z-50">
-      <div className="flex items-center gap-2 text-[#6C63FF] font-bold text-lg">
-        <span>📅</span>
-        <span>College Event Manager</span>
-      </div>
-      <div className="flex items-center gap-6 text-sm font-medium">
-        <button
-          onClick={() => setActivePage("events")}
-          className={`flex items-center gap-1 transition-colors ${activePage === "events" ? "text-white" : "text-gray-400 hover:text-white"}`}
-        >
-          ☰ All Events
-        </button>
-        <button
-          onClick={() => setActivePage("dashboard")}
-          className={`flex items-center gap-1 transition-colors ${activePage === "dashboard" ? "text-white" : "text-gray-400 hover:text-white"}`}
-        >
-          📈 Dashboard
-        </button>
-        <button className="flex items-center gap-1 bg-[#6C63FF] hover:bg-[#5a52e0] text-white px-4 py-1.5 rounded-lg transition-colors">
-          + New Event
-        </button>
-        <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
-          👤 Admin User ▾
-        </button>
-      </div>
-    </nav>
-  );
-}
-
-// ── Dashboard Page ────────────────────────────────────────────────────────────
+// Dashboard Page
 function DashboardPage({ summary, categoryBreakdown, recentEvents }) {
   return (
     <div className="min-h-screen bg-[#F0F1F8] px-6 py-10">
@@ -249,23 +217,8 @@ function EventsTable({ events }) {
   );
 }
 
-// ── All Events Page ───────────────────────────────────────────────────────────
-function AllEventsPage({ events }) {
-  return (
-    <div className="min-h-screen bg-[#F0F1F8] px-6 py-10">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-extrabold text-gray-800 mb-6 flex items-center gap-2">
-          📅 All Events
-        </h1>
-        <EventsTable events={events} />
-      </div>
-    </div>
-  );
-}
-
-// ── App Root ──────────────────────────────────────────────────────────────────
+// App Root
 export default function AdminDashboard() {
-  const [activePage, setActivePage] = useState("dashboard");
   const [dashboardData, setDashboardData] = useState({
     summary: {
       events: 0,
@@ -341,23 +294,18 @@ export default function AdminDashboard() {
       );
     }
 
-    return activePage === "dashboard" ? (
+    return (
       <DashboardPage
         summary={dashboardData.summary}
         categoryBreakdown={dashboardData.categoryBreakdown}
         recentEvents={dashboardData.recentEvents}
       />
-    ) : (
-      <AllEventsPage events={dashboardData.recentEvents} />
     );
-  }, [activePage, dashboardData, error, isLoading]);
+  }, [dashboardData, error, isLoading]);
 
   return (
-    <div className="font-sans min-h-screen" style={{ background: "linear-gradient(135deg, #6C63FF 0%, #A78BFA 100%)" }}>
-      <Navbar activePage={activePage} setActivePage={setActivePage} />
-      <div className="mx-4 my-4 rounded-3xl overflow-hidden shadow-2xl bg-[#F0F1F8]">
-        {activeContent}
-      </div>
+    <div className="font-sans min-h-screen bg-[#F0F1F8]">
+      {activeContent}
     </div>
   );
 }
