@@ -198,7 +198,7 @@ function EventsTable({ events }) {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="bg-[#00E5FF] hover:bg-cyan-400 text-gray-900 text-xs font-semibold px-4 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
+                  <button className="bg-[#00E5FF] hover:bg-cyan-400 active:bg-cyan-500 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 shadow-md hover:shadow-xl cursor-pointer transition-all duration-200 text-gray-900 text-xs font-semibold px-4 py-1.5 rounded-lg flex items-center gap-1">
                     👥 View
                   </button>
                 </td>
