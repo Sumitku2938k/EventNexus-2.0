@@ -253,7 +253,11 @@ export default function AdminDashboard() {
             registrations: data.summary?.totalRegistrations ?? 0,
           },
           categoryBreakdown: data.categoryBreakdown ?? [],
-          recentEvents: data.recentEvents ?? [],
+          recentEvents: (data.recentEvents ?? []).slice().sort((a, b) => {
+            const aCount = Number(a.registrationCount || 0);
+            const bCount = Number(b.registrationCount || 0);
+            return bCount - aCount; // highest registrations first
+          }),
         });
       } catch (fetchError) {
         setError(fetchError.message || "Failed to load dashboard data");
