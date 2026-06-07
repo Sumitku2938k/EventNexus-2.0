@@ -41,7 +41,7 @@ const STATS = [
   },
 ];
 
-const PIE_COLORS = ["#8B85E8", "#00E5FF"];
+const PIE_COLORS = ["#8B85E8", "#00E5FF", "#3B82F6" ];
 
 // ── Category Badge ────────────────────────────────────────────────────────────
 function CategoryBadge({ category }) {
