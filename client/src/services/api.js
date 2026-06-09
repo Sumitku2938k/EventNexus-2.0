@@ -77,6 +77,23 @@ export const getAdminDashboardSummary = async (token) => {
     return data;
 };
 
+export const getEventRegistrations = async (eventId, token) => {
+    const response = await fetch(`${BASE_URL}/admin/events/${eventId}/registrations`, {
+        method: "GET",
+        headers: {
+            Authorization: `${token}`,
+        },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch event registrations");
+    }
+
+    return data;
+};
+
 export const getEventById = async (id, token) => {
     const response = await fetch(`${BASE_URL}/events/${id}`, {
         method: "GET",
