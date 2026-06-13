@@ -7,6 +7,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { Link } from "react-router-dom";
 import { useAuth } from "../utils/auth";
 import { getAdminDashboardSummary } from "../services/api";
 
@@ -198,9 +199,12 @@ function EventsTable({ events }) {
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <button className="bg-[#00E5FF] hover:bg-cyan-400 active:bg-cyan-500 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 shadow-md hover:shadow-xl cursor-pointer transition-all duration-200 text-gray-900 text-xs font-semibold px-4 py-1.5 rounded-lg flex items-center gap-1">
+                  <Link
+                    to={`/admin/events/${event._id}/registrations`}
+                    className="bg-[#00E5FF] hover:bg-cyan-400 active:bg-cyan-500 hover:-translate-y-0.5 active:translate-y-0 active:scale-95 shadow-md hover:shadow-xl cursor-pointer transition-all duration-200 text-gray-900 text-xs font-semibold px-4 py-1.5 rounded-lg inline-flex items-center gap-1"
+                  >
                     👥 View
-                  </button>
+                  </Link>
                 </td>
               </tr>
             )) : (
