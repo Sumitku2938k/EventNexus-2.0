@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://event-nexus-backend-beta.vercel.app/api";
 
 export const registerUser = async (user) => {
     const res = await fetch(`${BASE_URL}/auth/register`, {

@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
         try {
             if (!token) return;
 
-            const response = await fetch(`http://localhost:5000/api/auth/user`, {
+            const response = await fetch(`https://event-nexus-backend-beta.vercel.app/api/auth/user`, {
                 method: "GET",
                 headers: {
                     Authorization: authorizationToken,
