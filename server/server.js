@@ -30,6 +30,21 @@ app.use(fileUpload({ // Enable file upload handling
   useTempFiles: true
 }));
 
+let isConnected = false; // Flag to track database connection status
+async function connectToDatabase() {
+  try {
+    if (isConnected) return;
+    await connectDB();
+    isConnected = true;
+    console.log('Connected to database');
+  } catch (error) {
+    console.error('Error connecting to database:', error);
+  }
+}
+
+// Ensure DB connection is initialized on startup/cold start.
+connectToDatabase();
+
 // Render setup guide on root URL
 app.get('/', (req, res) => {
   res.render('setup-guide');
@@ -45,10 +60,27 @@ app.use('/api/admin', adminRouter); //Restful API for admin dashboard and manage
 app.use(errorMiddleware);
 
 // Start the server
-connectDB().then(() => { // Ensure DB is connected before starting server
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-}).catch((err) => {
-  console.error('Failed to start server:', err);  
-});
+// connectDB().then(() => { // Ensure DB is connected before starting server
+//   app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+//   });
+// }).catch((err) => {
+//   console.error('Failed to start server:', err);  
+// });
+
+// Vercel's @vercel/node runtime invokes this file's export as the serverless handler.
+// It must be the Express app (or a (req, res) function), not a plain object.
+if (require.main === module) {
+  connectToDatabase()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Failed to start server:', err);
+      process.exit(1);
+    });
+}
+
+module.exports = app;
