@@ -20,13 +20,13 @@ const Signup = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("User registered:", user);
+    // console.log("User registered:", user);
 
     //Handling the form submission
     try {
       const res_data = await registerUser(user);
-      console.log("Response from Server while registering: ", res_data);
-      console.log("Token stored in localStorage: ", res_data.token);
+      // console.log("Response from Server while registering: ", res_data);
+      // console.log("Token stored in localStorage: ", res_data.token);
       
       storeTokenInLS(res_data.token);
       storeUserInLS(res_data.user);

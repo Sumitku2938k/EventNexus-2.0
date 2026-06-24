@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     let isLoggedIn = !!token; //if token is present then true else false
-    console.log("isLoggedIn : ", isLoggedIn);
+    // console.log("isLoggedIn : ", isLoggedIn);
 
     //Tackling the Logout functionality
     const logout = () => {
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.userData);
-                console.log("Authenticated user data : ", data.userData);
+                // console.log("Authenticated user data : ", data.userData);
             } else {
                 console.error("Failed to fetch user data");
             }
