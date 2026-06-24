@@ -45,7 +45,7 @@ const registerForEvent = async (req, res) => {
             registration 
         });
 
-        console.log("New registration created:", registration);
+        // console.log("New registration created:", registration);
     } catch (error) {
         console.error('Error in registering for event:', error);
         
@@ -185,7 +185,7 @@ const unregisterFromEvent = async (req, res) => {
             registration 
         });
 
-        console.log("Registration deleted:", registration);
+        // console.log("Registration deleted:", registration);
     } catch (error) {
         console.error('Error unregistering from event:', error);
         res.status(500).json({ message: 'Internal Server Error' });

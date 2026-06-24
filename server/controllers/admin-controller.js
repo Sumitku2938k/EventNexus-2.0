@@ -40,7 +40,7 @@ const createEvent = async (req, res) => {
         });
         await event.save(); // Save the event to the database
         res.status(201).json({ message: 'Event created successfully', event});
-        console.log("Event created: ", event);
+        // console.log("Event created: ", event);
     } catch (error) {
         console.error('Error in events controller:', error);
         res.status(500).json({ message: 'Internal Server Error' });
