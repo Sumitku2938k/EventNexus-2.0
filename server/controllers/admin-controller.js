@@ -41,9 +41,17 @@ const createEvent = async (req, res) => {
         await event.save(); // Save the event to the database
         res.status(201).json({ message: 'Event created successfully', event});
         // console.log("Event created: ", event);
-    } catch (error) {
-        console.error('Error in events controller:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+    } catch (error) { // Catch any errors that occur during the process
+        console.error('Error creating event:', error); // Log the detailed error on the server
+
+        // Provide more specific error messages to the client based on the error type
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message }); // Mongoose validation error
+        }
+        if (error.http_code === 400 && error.message.includes('Upload preset not found')) {
+            return res.status(400).json({ message: 'Cloudinary upload preset not found. Check configuration.' });
+        }
+        res.status(500).json({ message: 'Internal Server Error', details: error.message });
     }
 };
 
