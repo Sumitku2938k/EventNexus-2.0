@@ -67,8 +67,15 @@ const CreateEvent = () => {
     toast.success("Event Created Successfully");
     navigate("/events");
   } catch (error) {
-      toast.error(error.message || "Something went wrong");
-      console.log("Create Error: ", error);
+    let errorMessage = "Something went wrong";
+    if (error.response && error.response.data) {
+      errorMessage = error.response.data.message || errorMessage;
+      if (error.response.data.details) {
+        errorMessage += `: ${error.response.data.details}`;
+      }
+    }
+    toast.error(errorMessage);
+    console.log("Create Error: ", error);
   }
 };
 
