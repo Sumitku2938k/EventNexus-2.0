@@ -15,7 +15,7 @@ const path = require('path');
 
 //Handling cors policy issues
 const corsOptions = {
-    origin: "https://eventnexus-frontend.vercel.app/",
+    origin: "https://eventnexus-frontend.vercel.app",
     methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
     credentials: true,
 };
